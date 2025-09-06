@@ -1,4 +1,4 @@
-# Fluent Renewed
+# Fluent Renewed Plus
 
 ![Fluent Renewed Title](Assets/darkmode.png#gh-dark-mode-only)
 ![Fluent Renewed Title](Assets/darkmode.png#gh-light-mode-only)
@@ -8,6 +8,7 @@
 - Modern design
 - Many customization options
 - Almost any UI Element you would ever need
+- Some optimizations/fixes
 
 ## 🔌 Installation
 
@@ -29,6 +30,7 @@ local Library = loadstring(game:HttpGetAsync("https://github.com/ActualMasterOog
 
 ## Credits
 
+- [Adiont](https://github.com/Adi0nt/Fluent-Renewed-Plus) - The master mind behind Fluent Renewed Plus
 - [Master Oogway](https://github.com/ActualMasterOogway/Fluent-Renewed) - The master mind behind Fluent Renewed
 - [dawid](https://github.com/dawid-scripts/Fluent) - The master mind behind Fluent
 - [Lucide](https://github.com/lucide-icons), [Phosphor](https://github.com/phosphor-icons) - The sexy icons
