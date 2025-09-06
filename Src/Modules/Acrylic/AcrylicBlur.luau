@@ -106,7 +106,7 @@ return function(distance)
 	end
 
 	Blur.SetVisibility = function(Value)
-		model.Transparency = Value and 0.98 or 1
+		model.Transparency = Value and 1 - 1e-7 or 1
 	end
 
 	Blur.Frame = comp

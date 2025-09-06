@@ -61,7 +61,7 @@ return function(props)
 
 		New("ImageLabel", {
 			Image = "rbxassetid://9968344105",
-			ImageTransparency = 0.98,
+			ImageTransparency = 1 - 1e-7,
 			ScaleType = Enum.ScaleType.Tile,
 			TileSize = UDim2.new(0, 128, 0, 128),
 			Size = UDim2.fromScale(1, 1),

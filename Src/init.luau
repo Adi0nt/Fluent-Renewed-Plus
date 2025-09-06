@@ -61,7 +61,7 @@ local SharedTable = shared or _G or (getgenv and getgenv()) or getfenv(1)
 local New = Creator.New
 
 local BaseContainer = New("ScreenGui", {
-	Name = "Fluent Renewed Base GUI"
+	Name = "Fluent Renewed Plus Base GUI"
 })
 
 BaseContainer.Parent = (function() -- https://github.com/Pepsied-5229/Pepsi-UI-Library/blob/main/Pepsi-UI-Library.lua#L503
@@ -113,7 +113,7 @@ SharedTable.FluentRenewed = SharedTable.FluentRenewed or {}
 NotificationModule:Init(BaseContainer)
 
 local Library = {
-	Version = "1.0.5",
+	Version = "1.0.8",
 
 	OpenFrames = {},
 	Options = {},
@@ -266,7 +266,7 @@ function Library:Window(Config: {
 	if not Config.Title then
 		local Success, Game_Info = pcall(MarketplaceService.GetProductInfo, MarketplaceService, game.PlaceId)
 		
-		Config.Title = Success and Game_Info.Name or "Fluent Renewed"
+		Config.Title = Success and Game_Info.Name or "Fluent Renewed Plus"
 	end
 
 	Config.MinSize = if typeof(Config.MinSize) == "Vector2" then Config.MinSize else Vector2.new(470, 380)
@@ -291,7 +291,7 @@ function Library:Window(Config: {
 		MinSize = Config.MinSize,
 
 		Title = Config.Title,
-		SubTitle = Config.SubTitle or "Made with Fluent Renewed",
+		SubTitle = Config.SubTitle or "Made with Fluent Renewed Plus",
 
 		TabWidth = Config.TabWidth or 160,
 		Mobile = Config.Mobile or {
@@ -302,7 +302,7 @@ function Library:Window(Config: {
 		}
 	}
 
-	BaseContainer.Name = `FluentRenewed_{Config.Title}`
+	BaseContainer.Name = `FluentRenewedPlus_{Config.Title}`
 
 	Library.CreatedWindow = Window
 	Library:SetTheme(Library.Theme)
@@ -401,7 +401,7 @@ function Library:ToggleAcrylic(Value: boolean)
 	if Library.CreatedWindow then
 		if Library.UseAcrylic then
 			Library.Acrylic = Value
-			Library.CreatedWindow.AcrylicPaint.Model.Transparency = Value and 0.98 or 1
+			Library.CreatedWindow.AcrylicPaint.Model.Transparency = Value and 1 - 1e-7 or 1
 			if Value then
 				Acrylic.Enable()
 			else

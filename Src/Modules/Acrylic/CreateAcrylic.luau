@@ -11,11 +11,11 @@ local function createAcrylic()
 		CanCollide = false,
 		Locked = true,
 		CastShadow = false,
-		Transparency = 0.98,
+		Transparency = 1 - 1e-7,
 	}, {
 		Creator.New("SpecialMesh", {
 			MeshType = Enum.MeshType.Brick,
-			Offset = Vector3.new(0, 0, -0.000001),
+			Offset = Vector3.new(0, 0, 0),
 		})
 	})
 
