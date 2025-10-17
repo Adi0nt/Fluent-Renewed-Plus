@@ -10,10 +10,10 @@ local function Clone<Original>(ToClone: any & Original): (Original, boolean)
 			local Copies = copies or {}
 			local orig_type, copy = typeof(orig), nil
 
-			if orig_type == 'table' then
+			if orig_type == "table" then
 				if Copies[orig] then
 					copy = Copies[orig]
-				else	
+				else
 					copy = {}
 
 					Copies[orig] = copy
@@ -24,7 +24,7 @@ local function Clone<Original>(ToClone: any & Original): (Original, boolean)
 
 					(setrawmetatable or setmetatable)(copy, deepcopy((getrawmetatable or getmetatable)(orig), Copies))
 				end
-			elseif orig_type == 'Instance' or orig_type == 'function' then
+			elseif orig_type == "Instance" or orig_type == "function" then
 				copy = Clone(orig)
 			else
 				copy = orig
@@ -61,59 +61,65 @@ local SharedTable = shared or _G or (getgenv and getgenv()) or getfenv(1)
 local New = Creator.New
 
 local BaseContainer = New("ScreenGui", {
-	Name = "Fluent Renewed Plus Base GUI"
+	Name = "Fluent Renewed Plus Base GUI",
 })
 
-BaseContainer.Parent = (function() -- https://github.com/Pepsied-5229/Pepsi-UI-Library/blob/main/Pepsi-UI-Library.lua#L503
-	local success, result = pcall(function()
-		return (gethui or get_hidden_ui)()
-	end)
+BaseContainer.Parent = (
+	function() -- https://github.com/Pepsied-5229/Pepsi-UI-Library/blob/main/Pepsi-UI-Library.lua#L503
+		local success, result = pcall(function()
+			return (gethui or get_hidden_ui)()
+		end)
 
-	if success and result then
-		return result
+		if success and result then
+			return result
+		end
+
+		success, result = pcall(function()
+			local CoreGui = game:GetService("CoreGui")
+
+			CoreGui:GetFullName()
+
+			return CoreGui
+		end)
+
+		if success and result then
+			return result
+		end
+
+		success, result = pcall(function()
+			return (game:IsLoaded() or game.Loaded:Wait() or true)
+				and game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui", 10)
+		end)
+
+		if success and result then
+			return result
+		end
+
+		success, result = pcall(function()
+			local StarterGui = game:GetService("StarterGui")
+
+			StarterGui:GetFullName()
+
+			return StarterGui
+		end)
+
+		if success and result then
+			return result
+		end
+
+		return error(
+			"Seriously bad engine. Can't find a place to store the GUI. Robust code can't help this much incompetence.",
+			0
+		)
 	end
-
-	success, result = pcall(function()
-		local CoreGui = game:GetService("CoreGui")
-
-		CoreGui:GetFullName()
-
-		return CoreGui
-	end)
-
-	if success and result then
-		return result
-	end
-
-	success, result = pcall(function()
-		return (game:IsLoaded() or game.Loaded:Wait() or true) and game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui", 10)
-	end)
-
-	if success and result then
-		return result
-	end
-
-	success, result = pcall(function()
-		local StarterGui = game:GetService("StarterGui")
-
-		StarterGui:GetFullName()
-
-		return StarterGui
-	end)
-
-	if success and result then
-		return result
-	end
-
-	return error("Seriously bad engine. Can't find a place to store the GUI. Robust code can't help this much incompetence.", 0)
-end)()
+)()
 
 SharedTable.FluentRenewed = SharedTable.FluentRenewed or {}
 
 NotificationModule:Init(BaseContainer)
 
 local Library = {
-	Version = "1.0.8",
+	Version = "1.0.1",
 
 	OpenFrames = {},
 	Options = {},
@@ -129,7 +135,7 @@ local Library = {
 		Themes = Themes,
 		Shared = SharedTable,
 		Creator = Creator,
-		Icons = Icons
+		Icons = Icons,
 	},
 	Connections = Creator.Signals,
 	Unloaded = false,
@@ -142,20 +148,23 @@ local Library = {
 	Transparency = true,
 	MinimizeKey = Enum.KeyCode.LeftControl,
 
-	GUI = BaseContainer
+	GUI = BaseContainer,
 }
 
 function Library:SafeCallback(Function, ...)
-	assert(typeof(Function) == "function", debug.traceback(`Library:SafeCallback expects type 'function' at Argument #1, got '{typeof(Function)}'`, 2))
+	assert(
+		typeof(Function) == "function",
+		debug.traceback(`Library:SafeCallback expects type 'function' at Argument #1, got '{typeof(Function)}'`, 2)
+	)
 
 	task.spawn(function(...)
 		local Success, Event = pcall(Function, ...)
 
 		if not Success then
 			local _, i = Event:find(":%d+: ")
-	
+
 			task.defer(error, debug.traceback(Event, 2))
-	
+
 			Library:Notify({
 				Title = "Interface",
 				Content = "Callback error",
@@ -167,8 +176,8 @@ function Library:SafeCallback(Function, ...)
 end
 
 function Library.Utilities:Resize(X: number, Y: number): (number, number)
-    local x, y, CurrentSize = X / 1920, Y / 1080, Camera.ViewportSize
-    return CurrentSize.X * x, CurrentSize.Y * y
+	local x, y, CurrentSize = X / 1920, Y / 1080, Camera.ViewportSize
+	return CurrentSize.X * x, CurrentSize.Y * y
 end
 
 function Library.Utilities:Truncate(number: number, decimals: number, round: boolean): number
@@ -190,11 +199,10 @@ function Library.Utilities:GetIcon(Name: string): { Image: string, ImageRectSize
 end
 
 function Library.Utilities:Prettify(ToPrettify: EnumItem & string & number): string | number
-
 	if typeof(ToPrettify) == "EnumItem" then
-		return ({ToPrettify.Name:gsub("(%l)(%u)", "%1 %2")})[1]
+		return ({ string.gsub(ToPrettify.Name, "(%l)(%u)", "%1 %2") })[1]
 	elseif typeof(ToPrettify) == "string" then
-		return ({ToPrettify:gsub("(%l)(%u)", "%1 %2")})[1]
+		return ({ string.gsub(ToPrettify, "(%l)(%u)", "%1 %2") })[1]
 	elseif typeof(ToPrettify) == "number" then
 		return Library.Utilities:Round(ToPrettify, 2)
 	else
@@ -202,26 +210,34 @@ function Library.Utilities:Prettify(ToPrettify: EnumItem & string & number): str
 	end
 end
 
-function Library.Utilities:Clone<Original>(ToClone: {[any]: any} & (...any) -> (...any) & Object & Original): (Original, boolean)
+function Library.Utilities:Clone<Original>(ToClone: { [any]: any } & (...any) -> ...any & Object & Original): (Original, boolean)
 	return Clone(ToClone)
 end
 
-function Library.Utilities:GetOS()
-	local OSName = "Unknown"
-	
-	if GuiService:IsTenFootInterface() then
-		local L2Button_Name = UserInputService:GetStringForKeyCode(Enum.KeyCode.ButtonL2)
+function Library.Utilities:GetOS(): Enum.Platform
+	local Success, Platform = pcall(UserInputService.GetPlatform, UserInputService)
+	if not Success then
+		Platform = Enum.Platform.None
 
-		OSName = if L2Button_Name == "ButtonLT" then "Xbox" elseif L2Button_Name == "ButtonL2" then "PlayStation" else "Console"
-	elseif GuiService.IsWindows then
-		OSName = "Windows"
-	elseif version():find("^0.") == 1 then
-		OSName = "macOS"
-	elseif version():find("^2.") == 1 then
-		OSName = UserInputService.VREnabled and "MetaHorizon" or "Mobile"
+		if GuiService:IsTenFootInterface() then
+			local L2Button_Name = UserInputService:GetStringForKeyCode(Enum.KeyCode.ButtonL2)
+			if L2Button_Name == "ButtonLT" then
+				Platform = Enum.Platform.XBoxOne
+			elseif L2Button_Name == "ButtonL2" then
+				Platform = Enum.Platform.PS5
+			end
+		elseif GuiService.IsWindows then
+			Platform = Enum.Platform.Windows
+		elseif version():find("^0.") == 1 then
+			Platform = Enum.Platform.OSX
+		elseif version():find("^2.") == 1 then
+			Platform = Enum.Platform.Android
+			if UserInputService.VREnabled then
+				Platform = Enum.Platform.MetaOS
+			end
+		end
 	end
-
-	return OSName
+	return Platform
 end
 
 local Elements = {}
@@ -247,34 +263,51 @@ end
 Library.Elements = Elements
 
 function Library:Window(Config: {
-		Title: string?,
-		SubTitle: string?,
-		TabWidth: number?,
-		MinSize: Vector2?,
-		Size: UDim2?,
-		Resize: boolean?,
-		MinimizeKey: Enum.KeyCode?,
-		Acrylic: boolean?,
-		Theme: string?,
-		Mobile: {
-			GetIcon: (IsMinimized: boolean) -> { Image: string, ImageRectOffset: Vector2, ImageRectSize: Vector2 },
-			Size: UDim2
-		}?
-	})
+	Title: string?,
+	SubTitle: string?,
+	TabWidth: number?,
+	MinSize: Vector2?,
+	Size: UDim2?,
+	Resize: boolean?,
+	MinimizeKey: Enum.KeyCode?,
+	Acrylic: boolean?,
+	Theme: string?,
+	Mobile: {
+		GetIcon: (IsMinimized: boolean) -> { Image: string, ImageRectOffset: Vector2, ImageRectSize: Vector2 },
+		Size: UDim2,
+	}?,
+})
 	assert(Library.CreatedWindow == nil, debug.traceback("You cannot create more than one window.", 2))
 
 	if not Config.Title then
 		local Success, Game_Info = pcall(MarketplaceService.GetProductInfo, MarketplaceService, game.PlaceId)
-		
+
 		Config.Title = Success and Game_Info.Name or "Fluent Renewed Plus"
 	end
 
 	Config.MinSize = if typeof(Config.MinSize) == "Vector2" then Config.MinSize else Vector2.new(470, 380)
 
-	Config.Size = if Config.Resize ~= true then Config.Size else UDim2.fromOffset(Library.Utilities:Resize((Config.Size and Config.Size.X.Offset) or 470, (Config.Size and Config.Size.Y.Offset) or 380))
-	Config.MinSize = if Config.Resize ~= true then Config.MinSize else Vector2.new(Library.Utilities:Resize((Config.MinSize and Config.MinSize.X) or 470, (Config.MinSize and Config.MinSize.Y) or 380))
+	Config.Size = if Config.Resize ~= true
+		then Config.Size
+		else UDim2.fromOffset(
+			Library.Utilities:Resize(
+				(Config.Size and Config.Size.X.Offset) or 470,
+				(Config.Size and Config.Size.Y.Offset) or 380
+			)
+		)
+	Config.MinSize = if Config.Resize ~= true
+		then Config.MinSize
+		else Vector2.new(
+			Library.Utilities:Resize(
+				(Config.MinSize and Config.MinSize.X) or 470,
+				(Config.MinSize and Config.MinSize.Y) or 380
+			)
+		)
 
-	Library.MinimizeKey = if typeof(Config.MinimizeKey) == "string" or typeof(Config.MinimizeKey) == "EnumItem" and Config.MinimizeKey.EnumType == Enum.KeyCode then Config.MinimizeKey else Enum.KeyCode.LeftControl
+	Library.MinimizeKey = if typeof(Config.MinimizeKey) == "string"
+			or typeof(Config.MinimizeKey) == "EnumItem" and Config.MinimizeKey.EnumType == Enum.KeyCode
+		then Config.MinimizeKey
+		else Enum.KeyCode.LeftControl
 	Library.UseAcrylic = if typeof(Config.Acrylic) == "boolean" then Config.Acrylic else false
 	Library.Acrylic = if typeof(Config.Acrylic) == "boolean" then Config.Acrylic else false
 	Library.Theme = if typeof(Config.Theme) == "string" then Config.Theme else "Vynixu"
@@ -283,7 +316,7 @@ function Library:Window(Config: {
 		Acrylic.init()
 	end
 
-	local Window = require(Components.Window){
+	local Window = require(Components.Window)({
 		Config = Config,
 		Parent = BaseContainer,
 
@@ -295,12 +328,14 @@ function Library:Window(Config: {
 
 		TabWidth = Config.TabWidth or 160,
 		Mobile = Config.Mobile or {
-			GetIcon = function(IsMinimized: boolean): { Image: string, ImageRectOffset: Vector2, ImageRectSize: Vector2 }
+			GetIcon = function(
+				IsMinimized: boolean
+			): { Image: string, ImageRectOffset: Vector2, ImageRectSize: Vector2 }
 				return Library.Utilities:GetIcon(IsMinimized and "phosphor-eye" or "phosphor-eye-slash")
 			end,
-			Size = UDim2.fromOffset(30, 30)
-		}
-	}
+			Size = UDim2.fromOffset(30, 30),
+		},
+	})
 
 	BaseContainer.Name = `FluentRenewedPlus_{Config.Title}`
 
@@ -339,7 +374,7 @@ function Library:Destroy()
 
 		Creator.Disconnect()
 
-		for i,v in next, Library.Connections do
+		for i, v in next, Library.Connections do
 			local type = typeof(v)
 
 			if type == "RBXScriptConnection" and v.Connected then
@@ -359,7 +394,7 @@ function Library:Destroy()
 			return isClass
 		end
 
-		for i,v in next, Library.GUI:GetDescendants() do
+		for i, v in next, Library.GUI:GetDescendants() do
 			table.clear(tweenProps)
 
 			if IsA(v, "GuiObject") then
@@ -367,7 +402,7 @@ function Library:Destroy()
 			end
 
 			if IsA(v, "ScrollingFrame") then
-				tweenProps.ScrollBarImageTransparency = 1		
+				tweenProps.ScrollBarImageTransparency = 1
 			end
 
 			if IsA(v, "TextLabel") or IsA(v, "TextBox") then

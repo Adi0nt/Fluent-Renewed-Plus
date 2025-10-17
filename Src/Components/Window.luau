@@ -141,7 +141,7 @@ return function(Config)
 	})
 
 	Window.HideButton = New("ImageButton", {
-		Visible = Library.Utilities:GetOS() == "Mobile",
+		Visible = (Library.Utilities:GetOS() == Enum.Platform.IOS or Library.Utilities:GetOS() == Enum.Platform.Android),
 		Size = Config.Mobile.Size,
 		BackgroundTransparency = 1,
 		Position = UDim2.new(1, -Config.Mobile.Size.X.Offset - 25, 0.5, -Config.Mobile.Size.Y.Offset / 2),
@@ -346,7 +346,7 @@ return function(Config)
 				Duration = 6
 			})
 		end
-		if Library.Utilities:GetOS() == "Mobile" then
+		if (Library.Utilities:GetOS() == Enum.Platform.IOS or Library.Utilities:GetOS() == Enum.Platform.Android) then
 			local Icon = Config.Mobile.GetIcon(Window.Minimized)
 			Window.HideButton.Image = Icon.Image
 			Window.HideButton.ImageRectOffset = Icon.ImageRectOffset
@@ -402,7 +402,7 @@ return function(Config)
 		end
 	end)
 
-	if Library.Utilities:GetOS() == "Mobile" then
+	if (Library.Utilities:GetOS() == Enum.Platform.IOS or Library.Utilities:GetOS() == Enum.Platform.Android) then
 		Creator.AddSignal(Window.HideButton.TouchTap, function()
 			Window.Minimized = not Window.Minimized
        			Window.Root.Visible = not Window.Minimized

@@ -82,7 +82,7 @@ local function ApplyCustomProps(Object, Props: { [string]: any }?)
 end
 
 function Creator.AddSignal(Signal: RBXScriptSignal, Function)
-	Creator.Signals[#Creator.Signals+1] = Signal:Connect(Function)
+	table.insert(Creator.Signals, Signal:Connect(Function))
 end
 
 function Creator.Disconnect()
