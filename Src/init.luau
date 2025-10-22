@@ -141,7 +141,7 @@ local Library = {
 	Unloaded = false,
 	Loaded = true,
 
-	Theme = "Dark",
+	Theme = "Custom",
 	DialogOpen = false,
 	UseAcrylic = false,
 	Acrylic = false,
@@ -310,7 +310,7 @@ function Library:Window(Config: {
 		else Enum.KeyCode.LeftControl
 	Library.UseAcrylic = if typeof(Config.Acrylic) == "boolean" then Config.Acrylic else false
 	Library.Acrylic = if typeof(Config.Acrylic) == "boolean" then Config.Acrylic else false
-	Library.Theme = if typeof(Config.Theme) == "string" then Config.Theme else "Vynixu"
+	Library.Theme = if typeof(Config.Theme) == "string" then Config.Theme else "Custom"
 
 	if Config.Acrylic then
 		Acrylic.init()

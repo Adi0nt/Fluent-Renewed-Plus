@@ -96,8 +96,10 @@ function Creator.Disconnect()
 end
 
 function Creator.GetThemeProperty(Property)
-	if Themes[require(Root).Theme][Property] then
-		return Themes[require(Root).Theme][Property]
+	local Theme = require(Root).Theme
+	
+	if Themes[Theme][Property] then
+		return Themes[Theme][Property]
 	end
 
 	return Themes["Dark"][Property]

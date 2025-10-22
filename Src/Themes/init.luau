@@ -1,5 +1,6 @@
 local Themes = {
 	Names = {
+		"Custom",
 		"Vynixu",
 		"Dark",
 		"Darker",
