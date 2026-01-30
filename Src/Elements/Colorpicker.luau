@@ -540,6 +540,10 @@ function Element:New(Idx, Config)
 		Library:SafeCallback(Func, Colorpicker.Value, Colorpicker.Value)
 	end
 
+	function Colorpicker:SetVisibility(Bool)
+		ColorpickerFrame.Visible = Bool
+	end
+
 	function Colorpicker:Destroy()
 		ColorpickerFrame:Destroy()
 		Library.Options[Idx] = nil

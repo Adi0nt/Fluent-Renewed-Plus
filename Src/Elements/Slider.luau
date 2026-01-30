@@ -121,6 +121,10 @@ function Element:New(Idx, Config)
 		Library:SafeCallback(Func, Slider.Value, Slider.Value)
 	end
 
+	function Slider:SetVisibility(Bool)
+		SliderFrame.Visible = Bool
+	end
+
 	function Slider:SetValue(Value: number)
 		local OldValue = self.Value or Value
 

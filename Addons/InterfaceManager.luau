@@ -153,7 +153,7 @@ do
 					Max = 1,
 					Min = 0,
 					Default = Library.Utilities.Themes.Custom[index],
-					Rounding = 1,
+					Rounding = 2,
 					Callback = function(Value)
 						Library.Utilities.Themes.Custom[index] = Value
 						InterfaceManager:SaveSettings()

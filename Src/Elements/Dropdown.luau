@@ -30,7 +30,7 @@ function Element:New(Idx, Config)
 		Multi = Config.Multi or false,
 		AutoDeselect = Config.AutoDeselect or false,
 		Searchable = Config.Searchable or false,
-		FocusSearch = Config.FocusSearch or true,
+		FocusSearch = Config.FocusSearch or false,
 		SearchPlaceholder = Config.SearchPlaceholder or "Search...",
 		Displayer = typeof(Config.Displayer) == "function" and Config.Displayer or function(Value)
 			return typeof(Value) ~= "number" and tostring(Library.Utilities:Prettify(Value)) or Value
@@ -499,6 +499,10 @@ function Element:New(Idx, Config)
 	function Dropdown:OnChanged(Func)
 		Dropdown.Changed = Func
 		Library:SafeCallback(Func, Dropdown.Value, Dropdown.Value)
+	end
+
+	function Dropdown:SetVisibility(Bool)
+		DropdownFrame.Visible = Bool
 	end
 
 	function Dropdown:SetValue(Val)

@@ -126,6 +126,10 @@ function Element:New(Idx, Config)
 		Library:SafeCallback(Callback, Keybind.Value, Keybind.Value)
 	end
 
+	function Keybind:SetVisibility(Bool)
+		KeybindFrame.Visible = Bool
+	end
+
 	function Keybind:DoClick()
 		if typeof(Keybind.Callback) == "function" then
 			Library:SafeCallback(Keybind.Callback, Keybind.Toggled)

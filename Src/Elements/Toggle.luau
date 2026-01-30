@@ -65,6 +65,10 @@ function Element:New(Idx, Config)
 		Library:SafeCallback(Func, Toggle.Value, Toggle.Value)
 	end
 
+	function Toggle:SetVisibility(Bool)
+		ToggleFrame.Visible = Bool
+	end
+
 	function Toggle:SetValue(Value)
 		Value = not not Value
 

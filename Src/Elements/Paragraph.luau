@@ -30,6 +30,10 @@ function Element:New(Idx, Config)
 		Library:SafeCallback(Func, Paragraph.Value, Paragraph.Value)
 	end
 
+	function Paragraph:SetVisibility(Bool)
+		ParagraphFrame.Visible = Bool
+	end
+
 	function Paragraph:SetContent(Value)
 		Value = Value or ""
 		rawset(Paragraph, "Value", Value)

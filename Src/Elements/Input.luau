@@ -81,6 +81,10 @@ function Element:New(Idx, Config)
 		Library:SafeCallback(Func, Input.Value, Input.Value)
 	end
 
+	function Input:SetVisibility(Bool)
+		InputFrame.Visible = Bool
+	end
+
 	function Input:Destroy()
 		InputFrame:Destroy()
 		Library.Options[Idx] = nil

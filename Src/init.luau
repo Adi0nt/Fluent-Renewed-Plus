@@ -114,7 +114,7 @@ BaseContainer.Parent = (
 	end
 )()
 
-SharedTable.FluentRenewed = SharedTable.FluentRenewed or {}
+SharedTable.FluentRenewedPlus = SharedTable.FluentRenewedPlus or {}
 
 NotificationModule:Init(BaseContainer)
 
@@ -280,7 +280,7 @@ function Library:Window(Config: {
 	assert(Library.CreatedWindow == nil, debug.traceback("You cannot create more than one window.", 2))
 
 	if not Config.Title then
-		local Success, Game_Info = pcall(MarketplaceService.GetProductInfo, MarketplaceService, game.PlaceId)
+		local Success, Game_Info = pcall(MarketplaceService.GetProductInfoAsync, MarketplaceService, game.PlaceId)
 
 		Config.Title = Success and Game_Info.Name or "Fluent Renewed Plus"
 	end
