@@ -90,18 +90,60 @@ do
 
 		InterfaceTheme:SetValue(Settings.Theme)
 
-		section:Colorpicker("InterfaceManager_InterfaceThemeAccent", {
-			Title = "Theme Accent",
-			Description = "Changes the custom theme's accent.",
-			Transparency = 0,
-			Default = Color3.fromRGB(96, 205, 255),
-			UpdateOnChange = true,
-			Callback = function(Value: Color3)
-				Library.Utilities.Themes.Custom.Accent = Value
-				Library.Utilities.Creator.UpdateTheme()
-				InterfaceManager:SaveSettings()
-			end,
-		})
+		for _, index in
+			{
+				"AcrylicBorder",
+				"DialogInput",
+				"SubText",
+				"DropdownFrame",
+				"DropdownOption",
+				"AcrylicMain",
+				"Hover",
+				"InElementBorder",
+				"ElementBorder",
+				"Element",
+				"DropdownBorder",
+				"TitleBarLine",
+				"Input",
+				"DialogHolderLine",
+				"AcrylicNoise",
+				"AcrylicGradient",
+				"InputIndicator",
+				"SliderRail",
+				"DialogBorder",
+				"ToggleToggled",
+				"DialogButton",
+				"Keybind",
+				"DialogInputLine",
+				"Text",
+				"DialogButtonBorder",
+				"HoverChange",
+				"ElementTransparency",
+				"InputFocused",
+				"DialogHolder",
+				"Dialog",
+				"DropdownHolder",
+				"ToggleSlider",
+				"Tab",
+				"Accent",
+			}
+		do
+			section:Colorpicker(`InterfaceManager_InterfaceTheme_{index}`, {
+				Title = `Theme {index}`,
+				Description = `Changes the custom theme's {index} color.`,
+				Transparency = 0,
+				Default = Library.Utilities.Themes.Custom[index],
+				UpdateOnChange = true,
+				Callback = function(Value: Color3)
+					Library.Utilities.Themes.Custom[index] = Value
+					InterfaceManager:SaveSettings()
+					if Settings.Theme ~= "Custom" then
+						return
+					end
+					Library.Utilities.Creator.UpdateTheme()
+				end,
+			})
+		end
 
 		if Library.UseAcrylic then
 			section:AddToggle("InterfaceManager_AcrylicToggle", {
