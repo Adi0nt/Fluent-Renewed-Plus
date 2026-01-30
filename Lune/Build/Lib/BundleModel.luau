@@ -3,18 +3,18 @@
 local luau = require("@lune/luau")
 local roblox = require("@lune/roblox")
 
-local LuneUtils = require("libraries/LuneUtils")
+local LuneUtils = require("@self/libraries/LuneUtils")
 
 local Log = LuneUtils.Log
 local StringUtils = LuneUtils.StringUtils
 
-local LuaEncode = require("libraries/LuaEncode")
+local LuaEncode = require("@self/libraries/LuaEncode")
 
-local Version = require("data/Version")
+local Version = require("@self/data/Version")
 
 -- Init script template for codegen (in this, we'll maintain 5.1 *syntax* compat
 -- for optional compilation to vanilla Lua 5.1x bytecode format)
-local InitScriptTemplate = require("data/Template")
+local InitScriptTemplate = require("@self/data/Template")
 
 -- The line where the 1st closure's function will start in bundled codegen
 local InitialLineOffset = 8
