@@ -21,7 +21,7 @@ local function Run(
 		end
 	end
 
-	local Result = process.spawn(command, args, {
+	local Result = process.exec(command, args, {
 		shell = if process.os ~= "windows" then true else nil,
 		stdio = if DirectRun then "default" else "inherit",
 	})
