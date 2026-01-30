@@ -37,11 +37,11 @@ local stdio = require("@lune/stdio")
 local roblox = require("@lune/roblox")
 local process = require("@lune/process")
 
-local LuneUtils = require("Lib/Libraries/LuneUtils")
-local BundleModel = require("Lib/BundleModel")
+local LuneUtils = require("@self/Lib/Libraries/LuneUtils")
+local BundleModel = require("@self/Lib/BundleModel")
 
-local Version = require("Lib/Data/Version")
-local DefaultDarkluaConfig = require("Lib/Data/DefaultDarkluaConfig")
+local Version = require("@self/Lib/Data/Version")
+local DefaultDarkluaConfig = require("@self/Lib/Data/DefaultDarkluaConfig")
 
 local Log = LuneUtils.Log
 local StringUtils = LuneUtils.StringUtils
