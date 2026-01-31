@@ -122,7 +122,7 @@ function Element:New(Idx, Config)
 	end
 
 	function Slider:SetVisibility(Bool)
-		SliderFrame.Visible = Bool
+		SliderFrame.Frame.Visible = Bool
 	end
 
 	function Slider:SetValue(Value: number)

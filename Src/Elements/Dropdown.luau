@@ -502,7 +502,7 @@ function Element:New(Idx, Config)
 	end
 
 	function Dropdown:SetVisibility(Bool)
-		DropdownFrame.Visible = Bool
+		DropdownFrame.Frame.Visible = Bool
 	end
 
 	function Dropdown:SetValue(Val)

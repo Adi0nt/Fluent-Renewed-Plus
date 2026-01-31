@@ -127,7 +127,7 @@ function Element:New(Idx, Config)
 	end
 
 	function Keybind:SetVisibility(Bool)
-		KeybindFrame.Visible = Bool
+		KeybindFrame.Frame.Visible = Bool
 	end
 
 	function Keybind:DoClick()

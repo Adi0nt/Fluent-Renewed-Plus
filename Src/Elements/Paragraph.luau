@@ -31,7 +31,7 @@ function Element:New(Idx, Config)
 	end
 
 	function Paragraph:SetVisibility(Bool)
-		ParagraphFrame.Visible = Bool
+		ParagraphFrame.Frame.Visible = Bool
 	end
 
 	function Paragraph:SetContent(Value)

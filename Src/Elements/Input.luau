@@ -83,7 +83,7 @@ function Element:New(Idx, Config)
 	end
 
 	function Input:SetVisibility(Bool)
-		InputFrame.Visible = Bool
+		InputFrame.Frame.Visible = Bool
 	end
 
 	function Input:Destroy()

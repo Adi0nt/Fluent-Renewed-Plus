@@ -541,7 +541,7 @@ function Element:New(Idx, Config)
 	end
 
 	function Colorpicker:SetVisibility(Bool)
-		ColorpickerFrame.Visible = Bool
+		ColorpickerFrame.Frame.Visible = Bool
 	end
 
 	function Colorpicker:Destroy()

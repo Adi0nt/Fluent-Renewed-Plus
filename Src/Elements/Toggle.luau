@@ -66,7 +66,7 @@ function Element:New(Idx, Config)
 	end
 
 	function Toggle:SetVisibility(Bool)
-		ToggleFrame.Visible = Bool
+		ToggleFrame.Frame.Visible = Bool
 	end
 
 	function Toggle:SetValue(Value)
