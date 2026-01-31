@@ -1,6 +1,6 @@
 [package]
 name = "adi0nt/fluent-renewed-plus"
-version = "1.0.1.13"
+version = "1.0.1"
 license = "MIT"
 authors = ["Adi0nt"]
 registry = "https://github.com/UpliftGames/wally-index"
