@@ -45,6 +45,7 @@ function Element:New(Idx, Config)
 			if (not tonumber(Text)) and Text:len() > 0 then
 				Text = Input.Value
 			end
+			Text = tonumber(Text)
 		end
 
 		rawset(Input, "Value", Text)
