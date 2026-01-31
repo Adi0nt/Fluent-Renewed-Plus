@@ -18,7 +18,7 @@ function Dialog:Create()
 	local NewDialog, Library = {
 		Buttons = 0,
 		Closing = Signal.new(),
-		Closed = Signal.new()
+		Closed = Signal.new(),
 	}, require(Root)
 
 	NewDialog.TintFrame = New("TextButton", {
@@ -144,10 +144,8 @@ function Dialog:Create()
 		local Button = Button_Component("", NewDialog.ButtonHolder, true)
 		Button.Title.Text = Title
 
-		for _, Btn in next, NewDialog.ButtonHolder:GetChildren() do
-			if Btn:IsA("TextButton") then
-				Btn.Size = UDim2.new(1 / NewDialog.Buttons, -((NewDialog.Buttons - 1) * 10 / NewDialog.Buttons), 0, 32)
-			end
+		for _, Btn in next, NewDialog.ButtonHolder:QueryDescendants(">TextButton") do
+			Btn.Size = UDim2.new(1 / NewDialog.Buttons, -((NewDialog.Buttons - 1) * 10 / NewDialog.Buttons), 0, 32)
 		end
 
 		Creator.AddSignal(Button.Frame.MouseButton1Click, function()

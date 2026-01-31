@@ -343,10 +343,8 @@ function Element:New(Idx, Config)
 		local Values = Dropdown.Values
 		local Buttons = {}
 
-		for _, Element in next, DropdownScrollFrame:GetChildren() do
-			if not Element:IsA("UIListLayout") then
-				Element:Destroy()
-			end
+		for _, Element in next, DropdownScrollFrame:QueryDescendants(">:not(UIListLayout)") do
+			Element:Destroy()
 		end
 
 		local Count = 0
