@@ -9,5 +9,4 @@ realm = "shared"
 
 [dependencies]
 Signal = "lucasmzreal/fastsignal@10.4.0"
-Ripple = "littensy/ripple@0.10.1"
 Flipper = "reselim/flipper@2.0.0"

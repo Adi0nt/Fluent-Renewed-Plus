@@ -1,6 +1,6 @@
 local Root = script.Parent.Parent
 local Themes = require(Root.Themes)
-local Flipper, Ripple = require(Root.Packages.Flipper), require(Root.Packages.Ripple)
+local Flipper = require(Root.Packages.Flipper)
 local Signal = require(Root.Packages.Signal)
 
 local Creator = {
