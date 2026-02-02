@@ -130,42 +130,40 @@ do
 				"ElementTransparency",
 			}
 		do
-			task.spawn(function()
-				if typeof(Library.Utilities.Themes.Custom[index]) == "Color3" then
-					section:Colorpicker(`InterfaceManager_InterfaceTheme_{index}`, {
-						Title = `Theme {index}`,
-						Description = `Changes the custom theme's {index} color.`,
-						Transparency = 0,
-						Default = Library.Utilities.Themes.Custom[index],
-						UpdateOnChange = true,
-						Callback = function(Value: Color3)
-							Library.Utilities.Themes.Custom[index] = Value
-							InterfaceManager:SaveSettings()
-							if Settings.Theme ~= "Custom" then
-								return
-							end
-							Library.Utilities.Creator.UpdateTheme()
-						end,
-					})
-				elseif typeof(Library.Utilities.Themes.Custom[index]) == "number" then
-					section:AddSlider(`InterfaceManager_InterfaceTheme_{index}`, {
-						Title = `Theme {index}`,
-						Description = `Changes the custom theme's {index} value.`,
-						Max = 1,
-						Min = 0,
-						Default = Library.Utilities.Themes.Custom[index],
-						Rounding = 2,
-						Callback = function(Value)
-							Library.Utilities.Themes.Custom[index] = Value
-							InterfaceManager:SaveSettings()
-							if Settings.Theme ~= "Custom" then
-								return
-							end
-							Library.Utilities.Creator.UpdateTheme()
-						end,
-					})
-				end
-			end)
+			if typeof(Library.Utilities.Themes.Custom[index]) == "Color3" then
+				section:Colorpicker(`InterfaceManager_InterfaceTheme_{index}`, {
+					Title = `Theme {index}`,
+					Description = `Changes the custom theme's {index} color.`,
+					Transparency = 0,
+					Default = Library.Utilities.Themes.Custom[index],
+					UpdateOnChange = true,
+					Callback = function(Value: Color3)
+						Library.Utilities.Themes.Custom[index] = Value
+						InterfaceManager:SaveSettings()
+						if Settings.Theme ~= "Custom" then
+							return
+						end
+						Library.Utilities.Creator.UpdateTheme()
+					end,
+				})
+			elseif typeof(Library.Utilities.Themes.Custom[index]) == "number" then
+				section:AddSlider(`InterfaceManager_InterfaceTheme_{index}`, {
+					Title = `Theme {index}`,
+					Description = `Changes the custom theme's {index} value.`,
+					Max = 1,
+					Min = 0,
+					Default = Library.Utilities.Themes.Custom[index],
+					Rounding = 2,
+					Callback = function(Value)
+						Library.Utilities.Themes.Custom[index] = Value
+						InterfaceManager:SaveSettings()
+						if Settings.Theme ~= "Custom" then
+							return
+						end
+						Library.Utilities.Creator.UpdateTheme()
+					end,
+				})
+			end
 		end
 
 		if Library.UseAcrylic then
