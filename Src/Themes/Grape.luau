@@ -1,5 +1,5 @@
 return {
-	Accent = Color3.fromRGB(153, 102, 204),
+	Accent = Color3.fromRGB(138, 43, 226),
 	AcrylicMain = Color3.fromRGB(50, 40, 60),
 	AcrylicBorder = Color3.fromRGB(80, 70, 90),
 	AcrylicGradient = ColorSequence.new(Color3.fromRGB(50, 40, 60), Color3.fromRGB(50, 40, 60)),
@@ -10,9 +10,9 @@ return {
 	ElementBorder = Color3.fromRGB(40, 30, 50),
 	InElementBorder = Color3.fromRGB(80, 70, 90),
 	ElementTransparency = 0.88,
-	ToggleSlider = Color3.fromRGB(153, 102, 204),
+	ToggleSlider = Color3.fromRGB(138, 43, 226),
 	ToggleToggled = Color3.fromRGB(40, 30, 50),
-	SliderRail = Color3.fromRGB(153, 102, 204),
+	SliderRail = Color3.fromRGB(138, 43, 226),
 	DropdownFrame = Color3.fromRGB(110, 100, 120),
 	DropdownHolder = Color3.fromRGB(60, 50, 70),
 	DropdownBorder = Color3.fromRGB(40, 30, 50),
