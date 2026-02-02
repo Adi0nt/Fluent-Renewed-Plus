@@ -130,8 +130,8 @@ do
 				"ElementTransparency",
 			}
 		do
-			if typeof(Library.Utilities.Themes.Custom[index]) == "Color3" then
-				task.spawn(function()
+			task.spawn(function()
+				if typeof(Library.Utilities.Themes.Custom[index]) == "Color3" then
 					section:Colorpicker(`InterfaceManager_InterfaceTheme_{index}`, {
 						Title = `Theme {index}`,
 						Description = `Changes the custom theme's {index} color.`,
@@ -147,9 +147,7 @@ do
 							Library.Utilities.Creator.UpdateTheme()
 						end,
 					})
-				end)
-			elseif typeof(Library.Utilities.Themes.Custom[index]) == "number" then
-				task.spawn(function()
+				elseif typeof(Library.Utilities.Themes.Custom[index]) == "number" then
 					section:AddSlider(`InterfaceManager_InterfaceTheme_{index}`, {
 						Title = `Theme {index}`,
 						Description = `Changes the custom theme's {index} value.`,
@@ -166,8 +164,8 @@ do
 							Library.Utilities.Creator.UpdateTheme()
 						end,
 					})
-				end)
-			end
+				end
+			end)
 		end
 
 		if Library.UseAcrylic then
