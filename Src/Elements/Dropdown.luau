@@ -364,7 +364,7 @@ function Element:New(Idx, Config)
 			local Selected
 
 			local Button = Button_BuildList:Clone()
-			local ButtonSelector, ButtonLabel = Button.Frame, Button.ButtonLabel
+			local ButtonSelector, ButtonLabel = Button:WaitForChild("Frame", 3), Button:WaitForChild("ButtonLabel", 3)
 
 			-- AddThemeObject causes some small stuttering, the reason for that is because of 'Creator.UpdateTheme'
 			-- which is called every single time a dropdown is (re)built.
