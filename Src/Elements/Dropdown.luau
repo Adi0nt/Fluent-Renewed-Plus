@@ -343,14 +343,7 @@ function Element:New(Idx, Config)
 			Element:Destroy()
 		end
 
-		local Count = 0
-
 		for Idx, Value in next, Values do
-			Count += 1
-
-			if Count % 30 == 0 then
-				task.wait()
-			end
 
 			if
 				Dropdown.Searchable

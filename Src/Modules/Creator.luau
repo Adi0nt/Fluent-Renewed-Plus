@@ -163,44 +163,26 @@ function Creator.UpdateTheme(RegistryIndex: Instance?)
 
 	Creator.Theme.Updating = true
 
-	local Count = 0
-
 	if typeof(RegistryIndex) == "Instance" and Creator.Registry[RegistryIndex] then
 		for Property, ColorIdx in next, Creator.Registry[RegistryIndex].Properties do
-			Count += 1
-
-			if Count % 135 == 0 then
-				task.wait()
-			end
-
-			RegistryIndex[Property] = Creator.GetThemeProperty(ColorIdx)
+			Creator.Spawn(function()
+				RegistryIndex[Property] = Creator.GetThemeProperty(ColorIdx)
+			end)
 		end
 	else
 		for _, Object in next, Creator.Registry do
-			Count += 1
-
-			if Count % 135 == 0 then
-				task.wait()
-			end
-
 			for Property, ColorIdx in next, Object.Properties do
-				Count += 1
-
-				if Count % 135 == 0 then
-					task.wait()
-				end
-
-				Object.Object[Property] = Creator.GetThemeProperty(ColorIdx)
+				Creator.Spawn(function()
+					Object.Object[Property] = Creator.GetThemeProperty(ColorIdx)
+				end)
 			end
 		end
 	end
 
 	for Idx: number, Motor in next, Creator.TransparencyMotors do
-		if Idx % 135 == 0 then
-			task.wait()
-		end
-
-		Motor:setGoal(Flipper.Instant.new(Creator.GetThemeProperty("ElementTransparency")))
+		Creator.Spawn(function()
+			Motor:setGoal(Flipper.Instant.new(Creator.GetThemeProperty("ElementTransparency")))
+		end)
 	end
 
 	Creator.Theme.Updating = false

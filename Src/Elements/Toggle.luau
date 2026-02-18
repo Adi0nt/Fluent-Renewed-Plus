@@ -74,8 +74,8 @@ function Element:New(Idx, Config)
 
 		rawset(Toggle, "Value", Value)
 
-		Creator.OverrideTag(ToggleBorder, { Color = Toggle.Value and "Accent" or "ToggleSlider" })
-		Creator.OverrideTag(ToggleCircle, { ImageColor3 = Toggle.Value and "ToggleToggled" or "ToggleSlider" })
+		Creator.Spawn(Creator.OverrideTag, ToggleBorder, { Color = Toggle.Value and "Accent" or "ToggleSlider" })
+		Creator.Spawn(Creator.OverrideTag, ToggleCircle, { ImageColor3 = Toggle.Value and "ToggleToggled" or "ToggleSlider" })
 
 		ToggleCircle:TweenPosition(
 			UDim2.new(0, Toggle.Value and 19 or 2, 0.5, 0),
