@@ -8,5 +8,5 @@ repository = "https://github.com/Adi0nt/fluent-renewed-plus"
 realm = "shared"
 
 [dependencies]
-Signal = "nowoshire/namedsignal@1.2.1"
+Signal = "lucasmzreal/fastsignal@10.4.0"
 Flipper = "reselim/flipper@2.0.0"
