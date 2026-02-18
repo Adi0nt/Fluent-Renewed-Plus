@@ -174,7 +174,7 @@ function Element:New(Idx, Config)
 	return setmetatable(Slider, {
 		__newindex =  function(self, index, newvalue)
 			if index == "Value" then
-				task.spawn(Slider.SetValue, Slider, newvalue)
+				Creator.Spawn(Slider.SetValue, Slider, newvalue)
 			end
 			rawset(self, index, newvalue)
 		end

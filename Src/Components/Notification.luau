@@ -194,7 +194,7 @@ function Notification:New(Config)
 	function NewNotification:Close()
 		if not NewNotification.Closed then
 			NewNotification.Closed = true
-			task.spawn(function()
+			Creator.Spawn(function()
 				RootMotor:setGoal({
 					Scale = Spring(1, { frequency = 5 }),
 					Offset = Spring(60, { frequency = 5 }),

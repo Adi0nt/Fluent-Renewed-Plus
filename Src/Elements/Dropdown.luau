@@ -20,7 +20,7 @@ function Element:New(Idx, Config)
 		Values = (function()
 			local Idxes = {}
 
-			for i,v in next, Config.Values or {} do
+			for i, v in next, Config.Values or {} do
 				Idxes[#Idxes + 1] = v
 			end
 
@@ -40,7 +40,7 @@ function Element:New(Idx, Config)
 		Opened = false,
 		Type = "Dropdown",
 		Callback = Config.Callback or function() end,
-		Changed = Config.Changed or function() end
+		Changed = Config.Changed or function() end,
 	}
 
 	local DropdownFrame = require(Components.Element)(Config.Title, Config.Description, self.Container, false)
@@ -74,7 +74,7 @@ function Element:New(Idx, Config)
 		BackgroundTransparency = 1,
 		ThemeTag = {
 			ImageColor3 = "SubText",
-		}
+		},
 	})
 
 	local DropdownInner = New("TextButton", {
@@ -84,8 +84,8 @@ function Element:New(Idx, Config)
 		BackgroundTransparency = 0.9,
 		Parent = DropdownFrame.Frame,
 		ThemeTag = {
-			BackgroundColor3 = "DropdownFrame"
-		}
+			BackgroundColor3 = "DropdownFrame",
+		},
 	}, {
 		New("UICorner", {
 			CornerRadius = UDim.new(0, 5),
@@ -166,7 +166,7 @@ function Element:New(Idx, Config)
 		AnchorPoint = Vector2.new(0, 0.5),
 		ThemeTag = {
 			BackgroundColor3 = "Accent",
-		}
+		},
 	}, {
 		New("UICorner", {
 			CornerRadius = UDim.new(0, 2),
@@ -185,8 +185,8 @@ function Element:New(Idx, Config)
 		Position = UDim2.fromOffset(10, 0),
 		Name = "ButtonLabel",
 		ThemeTag = {
-			TextColor3 = "Text"
-		}
+			TextColor3 = "Text",
+		},
 	}) :: TextLabel
 
 	local Button_BuildList = New("TextButton", {
@@ -195,14 +195,14 @@ function Element:New(Idx, Config)
 		ZIndex = 23,
 		Text = "",
 		ThemeTag = {
-			BackgroundColor3 = "DropdownOption"
-		}
+			BackgroundColor3 = "DropdownOption",
+		},
 	}, {
 		ButtonSelector_BuildList,
 		ButtonLabel_BuildList,
 		New("UICorner", {
 			CornerRadius = UDim.new(0, 6),
-		})
+		}),
 	}) :: TextButton
 
 	local DropdownHolderCanvas = New("Frame", {
@@ -236,7 +236,8 @@ function Element:New(Idx, Config)
 		local Subtract = Dropdown.Searchable and 42 or 0
 		local Add = Dropdown.Searchable and 35 or 0
 
-		DropdownHolderCanvas.Size = UDim2.fromOffset(ListSizeX, math.min(392 - Subtract, DropdownListLayout.AbsoluteContentSize.Y + 10 + Add))
+		DropdownHolderCanvas.Size =
+			UDim2.fromOffset(ListSizeX, math.min(392 - Subtract, DropdownListLayout.AbsoluteContentSize.Y + 10 + Add))
 	end
 
 	local function RecalculateCanvasSize()
@@ -258,16 +259,11 @@ function Element:New(Idx, Config)
 		Dropdown.Opened = true
 		ScrollFrame.ScrollingEnabled = false
 		DropdownHolderCanvas.Visible = true
-		DropdownHolderFrame:TweenSize(
-			UDim2.fromScale(1, 1),
-			Enum.EasingDirection.Out,
-			Enum.EasingStyle.Quart,
-			.2
-		)
+		DropdownHolderFrame:TweenSize(UDim2.fromScale(1, 1), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.2)
 
 		if Dropdown.Searchable then
 			SearchBox.Text = ""
-			
+
 			if Dropdown.FocusSearch then
 				SearchBox:CaptureFocus()
 			end
@@ -356,118 +352,125 @@ function Element:New(Idx, Config)
 				task.wait()
 			end
 
-			if Dropdown.Searchable and SearchBox.Text ~= "" and not string.lower(Dropdown.Displayer(Value)):match(string.lower(SearchBox.Text)) then
+			if
+				Dropdown.Searchable
+				and SearchBox.Text ~= ""
+				and not string.lower(Dropdown.Displayer(Value)):match(string.lower(SearchBox.Text))
+			then
 				continue
 			end
 
-			local Table = {}
-			local Selected
+			Creator.Spawn(function()
+				local Table = {}
+				local Selected
 
-			local Button = Button_BuildList:Clone()
-			local ButtonSelector, ButtonLabel = Button:WaitForChild("Frame", 3), Button:WaitForChild("ButtonLabel", 3)
+				local Button = Button_BuildList:Clone()
+				local ButtonSelector, ButtonLabel =
+					Button:WaitForChild("Frame", 3), Button:WaitForChild("ButtonLabel", 3)
 
-			-- AddThemeObject causes some small stuttering, the reason for that is because of 'Creator.UpdateTheme'
-			-- which is called every single time a dropdown is (re)built.
-			-- I have no idea how to optimize this so suggestions are welcome.
+				-- AddThemeObject causes some small stuttering, the reason for that is because of 'Creator.UpdateTheme'
+				-- which is called every single time a dropdown is (re)built.
+				-- I have no idea how to optimize this so suggestions are welcome.
 
-			Creator.AddThemeObject(Button, {
-				BackgroundColor3 = "DropdownOption"
-			})
+				Creator.AddThemeObject(Button, {
+					BackgroundColor3 = "DropdownOption",
+				})
 
-			Creator.AddThemeObject(ButtonSelector, {
-				BackgroundColor3 = "Accent",
-			})
+				Creator.AddThemeObject(ButtonSelector, {
+					BackgroundColor3 = "Accent",
+				})
 
-			Creator.AddThemeObject(ButtonLabel, {
-				TextColor3 = "Text"
-			})
+				Creator.AddThemeObject(ButtonLabel, {
+					TextColor3 = "Text",
+				})
 
-			if Config.Multi then
-				Selected = Dropdown.Value[Value]
-			else
-				Selected = Dropdown.Value == Value
-			end
-
-			local BackMotor, SetBackTransparency = Creator.SpringMotor(1, Button, "BackgroundTransparency")
-			local SelMotor, SetSelTransparency = Creator.SpringMotor(1, ButtonSelector, "BackgroundTransparency")
-			local SelectorSizeMotor = Flipper.SingleMotor.new(6)
-
-			SelectorSizeMotor:onStep(function(value)
-				ButtonSelector.Size = UDim2.new(0, 4, 0, value)
-			end)
-
-			Creator.AddSignal(Button.MouseEnter, function()
-				SetBackTransparency(Selected and 0.85 or 0.89)
-			end)
-
-			Creator.AddSignal(Button.MouseLeave, function()
-				SetBackTransparency(Selected and 0.89 or 1)
-			end)
-
-			Creator.AddSignal(Button.MouseButton1Down, function()
-				SetBackTransparency(0.92)
-			end)
-
-			Creator.AddSignal(Button.MouseButton1Up, function()
-				SetBackTransparency(Selected and 0.85 or 0.89)
-			end)
-
-			function Table:UpdateButton()
 				if Config.Multi then
 					Selected = Dropdown.Value[Value]
-					if Selected then
-						SetBackTransparency(0.89)
-					end
 				else
 					Selected = Dropdown.Value == Value
+				end
+
+				local BackMotor, SetBackTransparency = Creator.SpringMotor(1, Button, "BackgroundTransparency")
+				local SelMotor, SetSelTransparency = Creator.SpringMotor(1, ButtonSelector, "BackgroundTransparency")
+				local SelectorSizeMotor = Flipper.SingleMotor.new(6)
+
+				SelectorSizeMotor:onStep(function(value)
+					ButtonSelector.Size = UDim2.new(0, 4, 0, value)
+				end)
+
+				Creator.AddSignal(Button.MouseEnter, function()
+					SetBackTransparency(Selected and 0.85 or 0.89)
+				end)
+
+				Creator.AddSignal(Button.MouseLeave, function()
 					SetBackTransparency(Selected and 0.89 or 1)
-				end
+				end)
 
-				SelectorSizeMotor:setGoal(Flipper.Spring.new(Selected and 14 or 6, { frequency = 6 }))
-				SetSelTransparency(Selected and 0 or 1)
-			end
+				Creator.AddSignal(Button.MouseButton1Down, function()
+					SetBackTransparency(0.92)
+				end)
 
-			ButtonLabel.InputBegan:Connect(function(Input)
-				if
-					Input.UserInputType == Enum.UserInputType.MouseButton1
-					or Input.UserInputType == Enum.UserInputType.Touch
-				then
-					local Try = not Selected
+				Creator.AddSignal(Button.MouseButton1Up, function()
+					SetBackTransparency(Selected and 0.85 or 0.89)
+				end)
 
-					if Dropdown:GetActiveValues() == 1 and not Try and not Config.AllowNull then
-					else
-						if Config.Multi then
-							Selected = Try
-							Dropdown.Value[Value] = Selected and true or nil
-
-							if typeof(Dropdown.Callback) == "function" then
-								Library:SafeCallback(Dropdown.Callback, Dropdown.Value)
-							end
-							if typeof(Dropdown.Changed) == "function" then
-								Library:SafeCallback(Dropdown.Changed, Dropdown.Value)
-							end
-						else
-							Selected = Try
-							Dropdown:SetValue(Selected and Value or nil)
-
-							for _, OtherButton in next, Buttons do
-								OtherButton:UpdateButton()
-							end
+				function Table:UpdateButton()
+					if Config.Multi then
+						Selected = Dropdown.Value[Value]
+						if Selected then
+							SetBackTransparency(0.89)
 						end
-
-						Table:UpdateButton()
-						Dropdown:Display()
+					else
+						Selected = Dropdown.Value == Value
+						SetBackTransparency(Selected and 0.89 or 1)
 					end
+
+					SelectorSizeMotor:setGoal(Flipper.Spring.new(Selected and 14 or 6, { frequency = 6 }))
+					SetSelTransparency(Selected and 0 or 1)
 				end
+
+				ButtonLabel.InputBegan:Connect(function(Input)
+					if
+						Input.UserInputType == Enum.UserInputType.MouseButton1
+						or Input.UserInputType == Enum.UserInputType.Touch
+					then
+						local Try = not Selected
+
+						if Dropdown:GetActiveValues() == 1 and not Try and not Config.AllowNull then
+						else
+							if Config.Multi then
+								Selected = Try
+								Dropdown.Value[Value] = Selected and true or nil
+
+								if typeof(Dropdown.Callback) == "function" then
+									Library:SafeCallback(Dropdown.Callback, Dropdown.Value)
+								end
+								if typeof(Dropdown.Changed) == "function" then
+									Library:SafeCallback(Dropdown.Changed, Dropdown.Value)
+								end
+							else
+								Selected = Try
+								Dropdown:SetValue(Selected and Value or nil)
+
+								for _, OtherButton in next, Buttons do
+									OtherButton:UpdateButton()
+								end
+							end
+
+							Table:UpdateButton()
+							Dropdown:Display()
+						end
+					end
+				end)
+
+				ButtonLabel.Text = Dropdown.Displayer(Value)
+				Button.Parent = DropdownScrollFrame
+
+				Table:UpdateButton()
+				Dropdown:Display()
+
+				Buttons[Button] = Table
 			end)
-
-			ButtonLabel.Text = Dropdown.Displayer(Value)
-			Button.Parent = DropdownScrollFrame
-
-			Table:UpdateButton()
-			Dropdown:Display()
-
-			Buttons[Button] = Table
 		end
 
 		ListSizeX = 0
@@ -583,12 +586,12 @@ function Element:New(Idx, Config)
 	return setmetatable(Dropdown, {
 		__newindex = function(self, index, newvalue)
 			if index == "Value" then
-				task.spawn(Dropdown.SetValue, Dropdown, newvalue)
+				Creator.Spawn(Dropdown.SetValue, Dropdown, newvalue)
 			elseif index == "Values" or index == "List" then
-				task.spawn(Dropdown.SetValues, Dropdown, newvalue)
+				Creator.Spawn(Dropdown.SetValues, Dropdown, newvalue)
 			end
 			rawset(self, index, newvalue)
-		end
+		end,
 	})
 end
 

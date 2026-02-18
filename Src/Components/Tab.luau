@@ -188,7 +188,7 @@ function TabModule:SelectTab(Tab)
 	Window.TabDisplay.Text = TabModule.Tabs[Tab].Name
 	Window.SelectorPosMotor:setGoal(Spring(TabModule:GetCurrentTabPos(), { frequency = 6 }))
 
-	task.spawn(function()
+	Creator.Spawn(function()
 		Window.ContainerHolder.Parent = Window.ContainerAnim
 		
 		Window.ContainerPosMotor:setGoal(Spring(15, { frequency = 10 }))

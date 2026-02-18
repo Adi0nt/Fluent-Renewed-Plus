@@ -157,7 +157,7 @@ function Library:SafeCallback(Function, ...)
 		debug.traceback(`Library:SafeCallback expects type 'function' at Argument #1, got '{typeof(Function)}'`, 2)
 	)
 
-	task.spawn(function(...)
+	Creator.Spawn(function(...)
 		local Success, Event = pcall(Function, ...)
 
 		if not Success then

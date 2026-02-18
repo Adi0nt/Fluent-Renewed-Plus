@@ -319,7 +319,7 @@ function Element:New(Idx, Config)
 			return setmetatable(Toggle.Keybind, {
 				__newindex =  function(self, index, newvalue)
 					if index == "Value" then
-						task.spawn(Keybind.SetValue, Keybind, newvalue)
+						Creator.Spawn(Keybind.SetValue, Keybind, newvalue)
 					end
 					rawset(self, index, newvalue)
 				end
@@ -336,7 +336,7 @@ function Element:New(Idx, Config)
 	return setmetatable(Toggle, {
 		__newindex =  function(self, index, newvalue)
 			if index == "Value" then
-				task.spawn(Toggle.SetValue, Toggle, newvalue)
+				Creator.Spawn(Toggle.SetValue, Toggle, newvalue)
 			end
 			rawset(self, index, newvalue)
 		end

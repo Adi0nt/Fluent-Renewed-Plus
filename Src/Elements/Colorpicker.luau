@@ -564,12 +564,12 @@ function Element:New(Idx, Config)
 			local NewValue_Type = typeof(newvalue)
 			if index == "Value" then
 				if NewValue_Type == "table" then
-					task.spawn(Colorpicker.SetValue, Colorpicker, newvalue, Colorpicker.Transparency)
+					Creator.Spawn(Colorpicker.SetValue, Colorpicker, newvalue, Colorpicker.Transparency)
 				else
-					task.spawn(Colorpicker.SetValueRGB, Colorpicker, newvalue, Colorpicker.Transparency)
+					Creator.Spawn(Colorpicker.SetValueRGB, Colorpicker, newvalue, Colorpicker.Transparency)
 				end
 			elseif index == "Transparency" and NewValue_Type == "number" then
-				task.spawn(Colorpicker.SetValueRGB, Colorpicker, Colorpicker.Value, newvalue)
+				Creator.Spawn(Colorpicker.SetValueRGB, Colorpicker, Colorpicker.Value, newvalue)
 			else
 				rawset(self, index, newvalue)
 			end

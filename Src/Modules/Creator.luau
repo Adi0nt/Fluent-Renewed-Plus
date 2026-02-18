@@ -6,6 +6,7 @@ local Signal = require(Root.Packages.Signal)
 local Creator = {
 	Registry = {},
 	Signals = {},
+	Threads = {},
 	TransparencyMotors = {},
 	DefaultProperties = {
 		ScreenGui = {
@@ -67,17 +68,67 @@ local Creator = {
 			BackgroundColor3 = Color3.new(1, 1, 1),
 			BorderColor3 = Color3.new(0, 0, 0),
 			BorderSizePixel = 0,
-		}
+		},
 	},
 	Theme = {
 		Updating = false,
-		Updated = Signal.new()
-	}
+		Updated = Signal.new(),
+	},
 }
+
+local function ReusableThreadCall(Function, Thread: thread, ...)
+	Function(...)
+	table.insert(Creator.Threads, Thread)
+end
+
+local function ReusableThread()
+	while true do
+		ReusableThreadCall(coroutine.yield())
+	end
+end
 
 local function ApplyCustomProps(Object, Props: { [string]: any }?)
 	if typeof(Props) == "table" and Props.ThemeTag then
 		Creator.AddThemeObject(Object, Props.ThemeTag)
+	end
+end
+
+function Creator.Spawn(Function, ...)
+	local length = table.maxn(Creator.Threads)
+	if length == 0 then
+		local thread = coroutine.create(ReusableThread)
+		coroutine.resume(thread)
+		return task.spawn(thread, Function, thread, ...)
+	else
+		local thread = Creator.Threads[length]
+		Creator.Threads[length] = nil -- Remove from free threads list.
+		return task.spawn(thread, Function, thread, ...)
+	end
+end
+
+function Creator.Defer(Function, ...)
+	local length = table.maxn(Creator.Threads)
+	if length == 0 then
+		local thread = coroutine.create(ReusableThread)
+		coroutine.resume(thread)
+		return task.defer(thread, Function, thread, ...)
+	else
+		local thread = Creator.Threads[length]
+		Creator.Threads[length] = nil -- Remove from free threads list.
+		return task.defer(thread, Function, thread, ...)
+	end
+end
+
+function Creator.Delay(Delay, Function, ...)
+	local length = table.maxn(Creator.Threads)
+	if length == 0 then
+		local thread = coroutine.create(ReusableThread)
+		coroutine.resume(thread)
+		return task.delay(Delay, thread, Function, thread, ...)
+	else
+		local thread = Creator.Threads[length]
+		Creator.Threads[length] = nil -- Remove from free threads list.
+		return task.delay(Delay, thread, Function, thread, ...)
 	end
 end
 
@@ -88,7 +139,7 @@ end
 function Creator.Disconnect()
 	for Idx = #Creator.Signals, 1, -1 do
 		local Connection = table.remove(Creator.Signals, Idx)
-		
+
 		if Connection then
 			Connection:Disconnect()
 		end
@@ -97,7 +148,7 @@ end
 
 function Creator.GetThemeProperty(Property)
 	local Theme = require(Root).Theme
-	
+
 	if Themes[Theme][Property] then
 		return Themes[Theme][Property]
 	end
@@ -142,7 +193,7 @@ function Creator.UpdateTheme(RegistryIndex: Instance?)
 				Object.Object[Property] = Creator.GetThemeProperty(ColorIdx)
 			end
 		end
-	end	
+	end
 
 	for Idx: number, Motor in next, Creator.TransparencyMotors do
 		if Idx % 135 == 0 then
@@ -156,7 +207,7 @@ function Creator.UpdateTheme(RegistryIndex: Instance?)
 	Creator.Theme.Updated:Fire()
 end
 
-function Creator.AddThemeObject(Object: Instance, Properties:{ [string]: any })
+function Creator.AddThemeObject(Object: Instance, Properties: { [string]: any })
 	local Idx = #Creator.Registry + 1
 	local Data = {
 		Object = Object,
@@ -200,7 +251,13 @@ function Creator.New(Name, Properties: { [string]: any }?, Children: { [number]:
 	return Object
 end
 
-function Creator.SpringMotor(Initial: any, Instance: Object, Prop: string, IgnoreDialogCheck: boolean?, ResetOnThemeChange: boolean?)
+function Creator.SpringMotor(
+	Initial: any,
+	Instance: Object,
+	Prop: string,
+	IgnoreDialogCheck: boolean?,
+	ResetOnThemeChange: boolean?
+)
 	IgnoreDialogCheck = IgnoreDialogCheck or false
 	ResetOnThemeChange = ResetOnThemeChange or false
 	local Motor = Flipper.SingleMotor.new(Initial)

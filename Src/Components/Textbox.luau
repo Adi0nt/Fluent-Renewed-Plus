@@ -94,7 +94,7 @@ return function(Parent, Acrylic)
 		end
 	end
 
-	task.spawn(Update)
+	Creator.Spawn(Update)
 
 	Creator.AddSignal(Textbox.Input:GetPropertyChangedSignal("Text"), Update)
 	Creator.AddSignal(Textbox.Input:GetPropertyChangedSignal("CursorPosition"), Update)
