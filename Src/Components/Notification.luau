@@ -3,6 +3,7 @@ local Root = script.Parent.Parent
 local Flipper = require(Root.Packages.Flipper)
 local Creator = require(Root.Modules.Creator)
 local Acrylic = require(Root.Modules.Acrylic)
+local Root = require(Root)
 
 local Spring = Flipper.Spring.new
 local Instant = Flipper.Instant.new
@@ -200,7 +201,7 @@ function Notification:New(Config)
 					Offset = Spring(60, { frequency = 5 }),
 				})
 				task.wait(0.4)
-				if require(Root).UseAcrylic then
+				if Root.UseAcrylic then
 					NewNotification.AcrylicPaint.Model:Destroy()
 				end
 				NewNotification.Holder:Destroy()
