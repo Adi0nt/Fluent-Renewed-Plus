@@ -89,7 +89,7 @@ end
 
 local function ApplyCustomProps(Object, Props: { [string]: any }?)
 	if typeof(Props) == "table" and Props.ThemeTag then
-		Creator.AddThemeObject(Object, Props.ThemeTag)
+		Creator.Spawn(Creator.AddThemeObject, Object, Props.ThemeTag)
 	end
 end
 
