@@ -32,6 +32,7 @@ function Element:New(Idx, Config)
 		Searchable = Config.Searchable or false,
 		FocusSearch = Config.FocusSearch or false,
 		SearchPlaceholder = Config.SearchPlaceholder or "Search...",
+		GetValues = typeof(Config.GetValues) == "function" and Config.GetValues or nil,
 		Displayer = typeof(Config.Displayer) == "function" and Config.Displayer or function(Value)
 			return typeof(Value) ~= "number" and tostring(Library.Utilities:Prettify(Value)) or Value
 		end,

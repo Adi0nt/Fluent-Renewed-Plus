@@ -408,8 +408,8 @@ function Element:New(Idx, Config)
 			local MaxY = MinY + SatVibMap.AbsoluteSize.Y
 			local MouseY = math.clamp(Mouse.Y, MinY, MaxY)
 
-			Sat = (MouseX - MinX) / (MaxX - MinX)
-			Vib = 1 - ((MouseY - MinY) / (MaxY - MinY))
+			Sat = math.map(MouseX, MinX, MaxX, 0, 1)
+			Vib = 1 - math.map(MouseY, MinY, MaxY, 0, 1)
 			Display()
 		end
 
@@ -418,7 +418,7 @@ function Element:New(Idx, Config)
 			local MaxY = MinY + HueSlider.AbsoluteSize.Y
 			local MouseY = math.clamp(Mouse.Y, MinY, MaxY)
 
-			Hue = ((MouseY - MinY) / (MaxY - MinY))
+			Hue = math.map(MouseY, MinY, MaxY, 0, 1)
 			Display()
 		end
 
@@ -427,7 +427,7 @@ function Element:New(Idx, Config)
 			local MaxY = MinY + TransparencySlider.AbsoluteSize.Y
 			local MouseY = math.clamp(Mouse.Y, MinY, MaxY)
 
-			Transparency = 1 - ((MouseY - MinY) / (MaxY - MinY))
+			Transparency = 1 - math.map(MouseY, MinY, MaxY, 0, 1)
 			Display()
 		end
 
