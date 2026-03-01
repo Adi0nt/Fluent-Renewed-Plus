@@ -29,10 +29,10 @@ function Element:New(Idx, Config)
 		Value = Config.Default or Config.Value,
 		Multi = Config.Multi or false,
 		AutoDeselect = Config.AutoDeselect or false,
+		AutoRefresh = Config.AutoRefresh or false,
 		Searchable = Config.Searchable or false,
 		FocusSearch = Config.FocusSearch or false,
 		SearchPlaceholder = Config.SearchPlaceholder or "Search...",
-		GetValues = typeof(Config.GetValues) == "function" and Config.GetValues or nil,
 		Displayer = typeof(Config.Displayer) == "function" and Config.Displayer or function(Value)
 			return typeof(Value) ~= "number" and tostring(Library.Utilities:Prettify(Value)) or Value
 		end,
@@ -261,6 +261,10 @@ function Element:New(Idx, Config)
 		ScrollFrame.ScrollingEnabled = false
 		DropdownHolderCanvas.Visible = true
 		DropdownHolderFrame:TweenSize(UDim2.fromScale(1, 1), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.2)
+
+		if Dropdown.AutoRefresh then
+			RepopulateDropdownList()
+		end
 
 		if Dropdown.Searchable then
 			SearchBox.Text = ""
