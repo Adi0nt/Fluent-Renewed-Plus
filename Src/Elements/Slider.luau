@@ -108,7 +108,7 @@ function Element:New(Idx, Config)
 		}
 	})
 
-	local SliderInner = New("Frame", {
+	New("Frame", {
 		Size = UDim2.new(1, 0, 0, 4),
 		AnchorPoint = Vector2.new(1, 0.5),
 		Position = UDim2.new(1, -10, 0.5, 0),
