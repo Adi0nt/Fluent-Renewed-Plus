@@ -145,7 +145,7 @@ function Element:New(Idx, Config)
 			rawset(self, "Value", NumberRange.new(Library.Utilities:Round(math.clamp(Value.Min, Slider.Min, Slider.Max), Slider.Rounding), Library.Utilities:Round(math.clamp(Value.Max, Slider.Min, Slider.Max), Slider.Rounding)))
 			SliderDots[1].Position = UDim2.new(math.map(self.Value.Min, Slider.Min, Slider.Max, 0, 1), -7, 0.5, 0)
 			SliderDots[2].Position = UDim2.new(math.map(self.Value.Max, Slider.Min, Slider.Max, 0, 1), -7, 0.5, 0)
-			SliderFill.Position = UDim2.new((self.Value.Min * SliderRail.AbsoluteSize.X) / (SliderRail.AbsoluteSize.X + 14), 7, SliderFill.Position.Y.Scale, SliderFill.Position.Y.Offset)
+			SliderFill.Position = UDim2.new((math.map(self.Value.Min, Slider.Min, Slider.Max, 0, 1) * SliderRail.AbsoluteSize.X) / (SliderRail.AbsoluteSize.X + 14), 7, SliderFill.Position.Y.Scale, SliderFill.Position.Y.Offset)
 			SliderFill.Size = UDim2.new(0, SliderDots[2].AbsolutePosition.X - SliderDots[1].AbsolutePosition.X, 1, 0)
 			SliderDisplay.Text = tostring(self.Value)
 		else
