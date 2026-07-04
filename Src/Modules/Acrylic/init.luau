@@ -13,15 +13,15 @@ function Acrylic.init()
 	local depthOfFieldDefaults = {}
 
 	function Acrylic.Enable()
-		for _, effect in next, depthOfFieldDefaults do
+		for effect, config in next, depthOfFieldDefaults do
 			effect.Enabled = false
 		end
 		baseEffect.Parent = game:GetService("Lighting")
 	end
 
 	function Acrylic.Disable()
-		for _, effect in next, depthOfFieldDefaults do
-			effect.Enabled = effect.enabled
+		for effect, config in next, depthOfFieldDefaults do
+			effect.Enabled = config.enabled
 		end
 		baseEffect.Parent = nil
 	end

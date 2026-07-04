@@ -182,10 +182,11 @@ function TabModule:SelectTab(Tab)
 		TabObject.Selected = false
 	end
 
-	TabModule.Tabs[Tab].SetTransparency(0.89)
-	TabModule.Tabs[Tab].Selected = true
+	local SelectedTab = TabModule.Tabs[Tab]
+	SelectedTab.SetTransparency(0.89)
+	SelectedTab.Selected = true
 
-	Window.TabDisplay.Text = TabModule.Tabs[Tab].Name
+	Window.TabDisplay.Text = SelectedTab.Name
 	Window.SelectorPosMotor:setGoal(Spring(TabModule:GetCurrentTabPos(), { frequency = 6 }))
 
 	Creator.Spawn(function()

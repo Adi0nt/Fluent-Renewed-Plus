@@ -436,6 +436,9 @@ function Element:New(Idx, Config)
 			if Input.UserInputType == Enum.UserInputType.MouseButton1 
 				or Input.UserInputType == Enum.UserInputType.Touch then
 				
+				if MouseMoveConnection then
+					MouseMoveConnection:Disconnect()
+				end
 				MouseMoveConnection = Mouse.Move:Connect(UpdateSatVib)
 				UpdateSatVib()
 			end
@@ -456,6 +459,9 @@ function Element:New(Idx, Config)
 			if Input.UserInputType == Enum.UserInputType.MouseButton1
 				or Input.UserInputType == Enum.UserInputType.Touch then
 				
+				if MouseMoveConnection then
+					MouseMoveConnection:Disconnect()
+				end
 				MouseMoveConnection = Mouse.Move:Connect(UpdateHue)
 				UpdateHue()
 			end
@@ -477,6 +483,9 @@ function Element:New(Idx, Config)
 				if Input.UserInputType == Enum.UserInputType.MouseButton1
 					or Input.UserInputType == Enum.UserInputType.Touch then
 					
+					if MouseMoveConnection then
+						MouseMoveConnection:Disconnect()
+					end
 					MouseMoveConnection = Mouse.Move:Connect(UpdateTransparency)
 					UpdateTransparency()
 				end

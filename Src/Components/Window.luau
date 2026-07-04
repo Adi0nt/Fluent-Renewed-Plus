@@ -257,9 +257,13 @@ return function(Config)
 				)
 			end
 
-			Input.Changed:Connect(function()
+			local Connection
+			Connection = Input.Changed:Connect(function()
 				if Input.UserInputState == Enum.UserInputState.End then
 					Dragging = false
+					if Connection then
+						Connection:Disconnect()
+					end
 				end
 			end)
 		end
@@ -378,9 +382,13 @@ return function(Config)
 			DragStart = Input.Position
 			DragStartPos = Window.HideButton.Position
 
-			Input.Changed:Connect(function()
+			local Connection
+			Connection = Input.Changed:Connect(function()
 				if Input.UserInputState == Enum.UserInputState.End then
 					IsDraggingHideButton = false
+					if Connection then
+						Connection:Disconnect()
+					end
 				end
 			end)
 		end

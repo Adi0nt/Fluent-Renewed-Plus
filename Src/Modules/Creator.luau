@@ -3,6 +3,14 @@ local Themes = require(Root.Themes)
 local Flipper = require(Root.Packages.Flipper)
 local Signal = require(Root.Packages.Signal)
 
+local Library
+local function getLibrary()
+	if not Library then
+		Library = require(Root)
+	end
+	return Library
+end
+
 local Creator = {
 	Registry = {},
 	Signals = {},
@@ -94,7 +102,7 @@ local function ApplyCustomProps(Object, Props: { [string]: any }?)
 end
 
 function Creator.Spawn(Function, ...)
-	local length = table.maxn(Creator.Threads)
+	local length = #Creator.Threads
 	if length == 0 then
 		local thread = coroutine.create(ReusableThread)
 		coroutine.resume(thread)
@@ -107,7 +115,7 @@ function Creator.Spawn(Function, ...)
 end
 
 function Creator.Defer(Function, ...)
-	local length = table.maxn(Creator.Threads)
+	local length = #Creator.Threads
 	if length == 0 then
 		local thread = coroutine.create(ReusableThread)
 		coroutine.resume(thread)
@@ -120,7 +128,7 @@ function Creator.Defer(Function, ...)
 end
 
 function Creator.Delay(Delay, Function, ...)
-	local length = table.maxn(Creator.Threads)
+	local length = #Creator.Threads
 	if length == 0 then
 		local thread = coroutine.create(ReusableThread)
 		coroutine.resume(thread)
@@ -147,10 +155,11 @@ function Creator.Disconnect()
 end
 
 function Creator.GetThemeProperty(Property)
-	local Theme = require(Root).Theme
+	local Theme = getLibrary().Theme
+	local CurrentTheme = Themes[Theme]
 
-	if Themes[Theme][Property] then
-		return Themes[Theme][Property]
+	if CurrentTheme and CurrentTheme[Property] ~= nil then
+		return CurrentTheme[Property]
 	end
 
 	return Themes["Dark"][Property]
@@ -163,26 +172,42 @@ function Creator.UpdateTheme(RegistryIndex: Instance?)
 
 	Creator.Theme.Updating = true
 
+	local Theme = getLibrary().Theme
+	local CurrentThemeTable = Themes[Theme] or Themes["Dark"]
+	local DarkThemeTable = Themes["Dark"]
+
+	local function GetThemeProp(ColorIdx)
+		local val = CurrentThemeTable[ColorIdx]
+		if val ~= nil then
+			return val
+		end
+		return DarkThemeTable[ColorIdx]
+	end
+
 	if typeof(RegistryIndex) == "Instance" and Creator.Registry[RegistryIndex] then
 		for Property, ColorIdx in next, Creator.Registry[RegistryIndex].Properties do
+			local val = GetThemeProp(ColorIdx)
 			Creator.Spawn(function()
-				RegistryIndex[Property] = Creator.GetThemeProperty(ColorIdx)
+				RegistryIndex[Property] = val
 			end)
 		end
 	else
 		for _, Object in next, Creator.Registry do
+			local obj = Object.Object
 			for Property, ColorIdx in next, Object.Properties do
+				local val = GetThemeProp(ColorIdx)
 				Creator.Spawn(function()
-					Object.Object[Property] = Creator.GetThemeProperty(ColorIdx)
+					obj[Property] = val
 				end)
 			end
 		end
-	end
 
-	for Idx: number, Motor in next, Creator.TransparencyMotors do
-		Creator.Spawn(function()
-			Motor:setGoal(Flipper.Instant.new(Creator.GetThemeProperty("ElementTransparency")))
-		end)
+		local transparencyVal = GetThemeProp("ElementTransparency")
+		for Idx: number, Motor in next, Creator.TransparencyMotors do
+			Creator.Spawn(function()
+				Motor:setGoal(Flipper.Instant.new(transparencyVal))
+			end)
+		end
 	end
 
 	Creator.Theme.Updating = false
@@ -255,7 +280,7 @@ function Creator.SpringMotor(
 		Ignore = Ignore or false
 		if not IgnoreDialogCheck then
 			if not Ignore then
-				if Prop == "BackgroundTransparency" and require(Root).DialogOpen then
+				if Prop == "BackgroundTransparency" and getLibrary().DialogOpen then
 					return
 				end
 			end

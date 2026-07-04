@@ -171,18 +171,20 @@ function Element:New(Idx, Config)
 	if Slider.Ranged then
 		function onInputChanged(Input: InputObject)
 			if (Input.UserInputType == Enum.UserInputType.MouseMovement or Input.UserInputType == Enum.UserInputType.Touch) then
-				local SizeScale = math.clamp((Input.Position.X - SliderRail.AbsolutePosition.X) / SliderRail.AbsoluteSize.X, 0, 1)
-				local Value = NumberRange.new(0)
-				if Dragging[1] then
-					local Min = Slider.Min + ((Slider.Max - Slider.Min) * SizeScale)
-					local Max = math.max(Min, Slider.Value.Max)
-					Value = NumberRange.new(Min, Max)
-					Slider:SetValue(Value)
-				elseif Dragging[2] then
-					local Max = Slider.Min + ((Slider.Max - Slider.Min) * SizeScale)
-					local Min = math.min(Max, Slider.Value.Min)
-					Value = NumberRange.new(Min, Max)
-					Slider:SetValue(Value)
+				if Dragging[1] or Dragging[2] then
+					local SizeScale = math.clamp((Input.Position.X - SliderRail.AbsolutePosition.X) / SliderRail.AbsoluteSize.X, 0, 1)
+					local Value
+					if Dragging[1] then
+						local Min = Slider.Min + ((Slider.Max - Slider.Min) * SizeScale)
+						local Max = math.max(Min, Slider.Value.Max)
+						Value = NumberRange.new(Min, Max)
+						Slider:SetValue(Value)
+					elseif Dragging[2] then
+						local Max = Slider.Min + ((Slider.Max - Slider.Min) * SizeScale)
+						local Min = math.min(Max, Slider.Value.Min)
+						Value = NumberRange.new(Min, Max)
+						Slider:SetValue(Value)
+					end
 				end
 			end
 		end
