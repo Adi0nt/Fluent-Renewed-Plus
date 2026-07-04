@@ -12,7 +12,7 @@ end
 setmetatable(Themes, {
 	__index = function(self, key)
 		local child = script:FindFirstChild(key)
-		if child and child:IsA("ModuleScript") then
+		if child then
 			local ThemeData = require(child)
 			ThemeData.Name = key
 			self[key] = ThemeData
